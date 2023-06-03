@@ -1,4 +1,33 @@
-h1 {
-  text-align: center;
-  color: blue;
+header {
+  text-align: right;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 250%;
+  background: rgb(0, 36, 6);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 36, 6, 1) 0%,
+    rgba(9, 121, 12, 1) 35%,
+    rgba(0, 255, 31, 1) 100%
+  );
+  color: whitesmoke;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  padding-right: 14%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h2 {
+  font-size: 160%;
+  padding-left: 2%;
+  margin-bottom: 1%;
+}
+
+.citySearch {
+  width: 25%;
+  padding-left: 1%;
 }
