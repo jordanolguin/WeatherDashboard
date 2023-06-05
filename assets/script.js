@@ -25,10 +25,11 @@ var getCoordinates = function (coordinates) {
   var apiKey = "5800608481ba95f3f6584cd0785fd228";
 
   var coordUrl =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    // "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
     cityName +
-    "&limit=" +
-    limit +
+    // "&limit=" +
+    // limit +
     "&appid=" +
     apiKey;
 
@@ -37,9 +38,10 @@ var getCoordinates = function (coordinates) {
       return response.json();
     })
     .then(function (data) {
-      if (data.length > 0) {
-        var lat = data[0].lat;
-        var lon = data[0].lon;
+      if (data) {
+        console.log(data);
+        var lat = data.coord.lat;
+        var lon = data.coord.lon;
         console.log(
           "Coordinates for " +
             cityName +
@@ -48,7 +50,7 @@ var getCoordinates = function (coordinates) {
             ", Longitude = " +
             lon
         );
-        getWeatherData(lat, lon);
+        getForcast(lat, lon);
       } else {
         console.log("No coordinates found for " + cityName + ".");
       }
@@ -58,7 +60,8 @@ var getCoordinates = function (coordinates) {
     });
 };
 
-var getWeatherData = function (latitude, longitude) {
+// plug lat and lon values into api
+var getForcast = function (latitude, longitude) {
   var apiKey = "5800608481ba95f3f6584cd0785fd228";
 
   var weatherUrl =
