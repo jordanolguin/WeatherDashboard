@@ -2,7 +2,42 @@ var userFormEl = document.querySelector("#user-form");
 var cityInput = document.querySelector("#cityName");
 var weatherContainerEl = document.querySelector("#weather-container");
 
-// execute City search and save searches in localStorage
+//display history in DOM
+var displaySearchHistory = function () {
+  var searches = getItem("searches") || [];
+  for (var i = 0; i < searches.length; i++) {
+    var searchItem = searches[i];
+    var searchItemEl = document.createElement("button");
+    searchItemEl.textContent = searchItem;
+    searchItemEl.classList.add("search-history-item");
+    searchItemEl.addEventListener("click", function () {
+      var selectedCity = this.textContent;
+      getCoordinates(selectedCity);
+    });
+
+    weatherContainerEl.appendChild(searchItemEl);
+  }
+};
+
+// Function to retrieve item from localStorage
+var getItem = function (key) {
+  try {
+    var item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  } catch (error) {
+    console.log("Error retrieving item from localStorage:", error);
+    return null;
+  }
+};
+
+var appendToSearchHistory = function (city) {
+  var searches = JSON.parse(localStorage.getItem("searches")) || [];
+  searches.push(city);
+  localStorage.setItem("searches", JSON.stringify(searches));
+};
+
+//execute City search and save searches in localStorage
+//display search history
 var formSubmitHandler = function (event) {
   event.preventDefault();
 
@@ -14,6 +49,8 @@ var formSubmitHandler = function (event) {
     weatherContainerEl.textContent = "";
     cityInput.value = "";
     saveSearch(city);
+    appendToSearchHistory(city);
+    displaySearchHistory();
   } else {
     alert("Please enter valid city name");
   }
@@ -134,3 +171,4 @@ var getForcast = function (latitude, longitude) {
 };
 
 userFormEl.addEventListener("submit", formSubmitHandler);
+displaySearchHistory();
