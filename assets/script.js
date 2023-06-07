@@ -2,7 +2,7 @@ var userFormEl = document.querySelector("#user-form");
 var cityInput = document.querySelector("#cityName");
 var weatherContainerEl = document.querySelector("#weather-container");
 
-// execute City search
+// execute City search and save searches in localStorage
 var formSubmitHandler = function (event) {
   event.preventDefault();
 
@@ -13,23 +13,33 @@ var formSubmitHandler = function (event) {
 
     weatherContainerEl.textContent = "";
     cityInput.value = "";
+    saveSearch(city);
   } else {
     alert("Please enter valid city name");
   }
+};
+
+//save data in localStorage
+var saveSearch = function (city) {
+  var searches = JSON.parse(localStorage.getItem("searches")) || [];
+  searches.push(city);
+  localStorage.setItem("searches", JSON.stringify(searches));
 };
 
 //capturing and appending current weather to DOM
 var displayCurrentWeather = function (dataObj) {
   console.log(dataObj);
   var cityEl = document.createElement("h1");
+  var iconEl = document.createElement("img");
   var tempEl = document.createElement("p");
   var windEl = document.createElement("p");
   var humidityEl = document.createElement("p");
   cityEl.textContent = dataObj.name;
+  iconEl.textContent = dataObj.weather.icon;
   tempEl.textContent = dataObj.main.temp;
   windEl.textContent = dataObj.wind.speed;
   humidityEl.textContent = dataObj.main.humidity;
-  weatherContainerEl.append(cityEl, tempEl, windEl, humidityEl);
+  weatherContainerEl.append(cityEl, iconEl, tempEl, windEl, humidityEl);
 };
 
 //capturing and appending five day forcast
