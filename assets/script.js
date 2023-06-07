@@ -30,6 +30,13 @@ var getItem = function (key) {
   }
 };
 
+//clear search history
+var clearSearchHistory = function () {
+  localStorage.removeItem("searches");
+  weatherContainerEl.textContent = "";
+};
+
+//appending search history to the DOM
 var appendToSearchHistory = function (city) {
   var searches = JSON.parse(localStorage.getItem("searches")) || [];
   searches.push(city);
@@ -49,6 +56,7 @@ var formSubmitHandler = function (event) {
     weatherContainerEl.textContent = "";
     cityInput.value = "";
     saveSearch(city);
+    clearSearchHistory();
     appendToSearchHistory(city);
     displaySearchHistory();
   } else {
