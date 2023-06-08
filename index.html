@@ -29,6 +29,9 @@
           />
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
+        <button type="button" class="btn btn-dark" id="clear-history">
+          Clear Search History
+        </button>
       </div>
       <div class="col-12 col-md-8">
         <h2 class="subtitle">
@@ -36,6 +39,8 @@
         </h2>
         <p id="currentDay" class="lead"></p>
         <div id="weather-container" class="list-group"></div>
+        <div id="history-container" class="list-group"></div>
+        <div id="forcast-container" class="list-group"></div>
       </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

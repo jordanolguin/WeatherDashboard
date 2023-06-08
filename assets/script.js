@@ -1,25 +1,32 @@
 var userFormEl = document.querySelector("#user-form");
+var clearHistoryBtn = document.querySelector("#clear-history");
 var cityInput = document.querySelector("#cityName");
 var weatherContainerEl = document.querySelector("#weather-container");
+var historyContainerEl = document.querySelector("#history-container");
+var fiveDayForcastEl = document.querySelector("#forcast-container");
+var searches = JSON.parse(localStorage.getItem("searches")) || [];
 
 //display history in DOM
 var displaySearchHistory = function () {
-  var searches = getItem("searches") || [];
+  historyContainerEl.textContent = "";
   for (var i = 0; i < searches.length; i++) {
     var searchItem = searches[i];
     var searchItemEl = document.createElement("button");
     searchItemEl.textContent = searchItem;
+    searchItemEl.setAttribute("data-cityName", searchItem);
     searchItemEl.classList.add("search-history-item");
-    searchItemEl.addEventListener("click", function () {
-      var selectedCity = this.textContent;
-      getCoordinates(selectedCity);
-    });
-
-    weatherContainerEl.appendChild(searchItemEl);
+    historyContainerEl.appendChild(searchItemEl);
   }
 };
 
-// Function to retrieve item from localStorage
+//capturing the data from the search history item buttons
+var handleSearchHistoryClick = function (event) {
+  var button = event.target;
+  var historyName = button.getAttribute("data-cityName");
+  getCoordinates(historyName);
+};
+
+//retrieve item from localStorage
 var getItem = function (key) {
   try {
     var item = localStorage.getItem(key);
@@ -31,33 +38,23 @@ var getItem = function (key) {
 };
 
 //clear search history
-var clearSearchHistory = function () {
+var clearSearchHistory = function (event) {
+  event.preventDefault();
   localStorage.removeItem("searches");
-  weatherContainerEl.textContent = "";
-};
-
-//appending search history to the DOM
-var appendToSearchHistory = function (city) {
-  var searches = JSON.parse(localStorage.getItem("searches")) || [];
-  searches.push(city);
-  localStorage.setItem("searches", JSON.stringify(searches));
+  searches = [];
+  displaySearchHistory();
 };
 
 //execute City search and save searches in localStorage
 //display search history
 var formSubmitHandler = function (event) {
   event.preventDefault();
-
   var city = cityInput.value.trim();
-
   if (city) {
     getCoordinates(city);
-
     weatherContainerEl.textContent = "";
     cityInput.value = "";
     saveSearch(city);
-    clearSearchHistory();
-    appendToSearchHistory(city);
     displaySearchHistory();
   } else {
     alert("Please enter valid city name");
@@ -66,13 +63,13 @@ var formSubmitHandler = function (event) {
 
 //save data in localStorage
 var saveSearch = function (city) {
-  var searches = JSON.parse(localStorage.getItem("searches")) || [];
   searches.push(city);
   localStorage.setItem("searches", JSON.stringify(searches));
 };
 
 //capturing and appending current weather to DOM
 var displayCurrentWeather = function (dataObj) {
+  weatherContainerEl.textContent = " ";
   console.log(dataObj);
   var cityEl = document.createElement("h1");
   var iconEl = document.createElement("img");
@@ -89,6 +86,7 @@ var displayCurrentWeather = function (dataObj) {
 
 //capturing and appending five day forcast
 var displayFiveDayForcast = function (array) {
+  fiveDayForcastEl.textContent = " ";
   var filteredArray = array.filter(
     (obj) => obj.dt_txt.split(" ")[1] === "12:00:00"
   );
@@ -106,20 +104,19 @@ var displayFiveDayForcast = function (array) {
     windEl.textContent = "Wind Speed: " + forecastItem.wind.speed;
     humidityEl.textContent = "Humidity: " + forecastItem.main.humidity;
     forecastContainer.append(dateEl, tempEl, windEl, humidityEl);
-    weatherContainerEl.appendChild(forecastContainer);
+    fiveDayForcastEl.appendChild(forecastContainer);
   }
 };
 
 // capture City input coordinates for weather function
 var getCoordinates = function (coordinates) {
-  var cityName = cityInput.value.trim();
+  console.log(this);
   var limit = 1;
   var apiKey = "5800608481ba95f3f6584cd0785fd228";
-
   var coordUrl =
     // "http://api.openweathermap.org/geo/1.0/direct?q=" +
     "https://api.openweathermap.org/data/2.5/weather?q=" +
-    cityName +
+    coordinates +
     "&units=imperial" +
     "&appid=" +
     apiKey;
@@ -155,7 +152,6 @@ var getCoordinates = function (coordinates) {
 // plug lat and lon values into api
 var getForcast = function (latitude, longitude) {
   var apiKey = "5800608481ba95f3f6584cd0785fd228";
-  // var forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
   var forcastUrl =
     "https://api.openweathermap.org/data/2.5/forecast?lat=" +
     latitude +
@@ -179,4 +175,6 @@ var getForcast = function (latitude, longitude) {
 };
 
 userFormEl.addEventListener("submit", formSubmitHandler);
+clearHistoryBtn.addEventListener("click", clearSearchHistory);
 displaySearchHistory();
+historyContainerEl.addEventListener("click", handleSearchHistoryClick);
