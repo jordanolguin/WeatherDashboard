@@ -12,35 +12,42 @@
     <link rel="stylesheet" href="assets/style.css" />
     <title>Weather Dashboard</title>
   </head>
+
   <body>
     <header>
       <h1>Weather Dashboard</h1>
     </header>
-    <main class="flex-row justify-space-between">
-      <div class="col-12 col-md-4">
-        <h2>Search for a city:</h2>
-        <form class="d-flex citySearch" id="user-form" role="search">
-          <input
-            id="cityName"
-            class="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-          />
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-        <button type="button" class="btn btn-dark" id="clear-history">
-          Clear Search History
-        </button>
-      </div>
-      <div class="col-12 col-md-8">
-        <h2 class="subtitle">
-          Showing Weather Results for: <span id="weather-search-term"></span>
-        </h2>
-        <p id="currentDay" class="lead"></p>
-        <div id="weather-container" class="list-group"></div>
-        <div id="history-container" class="list-group"></div>
-        <div id="forcast-container" class="list-group"></div>
+    <main class="container justify-space-between">
+      <div class="row">
+        <div class="col-12 col-md-3">
+          <div class="row">
+            <h2>Search for a city:</h2>
+            <form class="d-flex citySearch" id="user-form" role="search">
+              <input
+                id="cityName"
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+          <div class="row">
+            <div class="column">
+              <button type="button" class="btn btn-dark" id="clear-history">
+                Clear Search History
+              </button>
+              <div id="history-container" class="list-group"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-8">
+          <div id="weather-container" class="list-group row"></div>
+          <div id="forcast-container" class="row"></div>
+        </div>
       </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

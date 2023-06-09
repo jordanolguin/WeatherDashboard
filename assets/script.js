@@ -71,16 +71,16 @@ var saveSearch = function (city) {
 var displayCurrentWeather = function (dataObj) {
   weatherContainerEl.textContent = " ";
   console.log(dataObj);
-  var cityEl = document.createElement("h1");
+  var cityEl = document.createElement("h2");
   var iconEl = document.createElement("img");
   var tempEl = document.createElement("p");
   var windEl = document.createElement("p");
   var humidityEl = document.createElement("p");
   cityEl.textContent = dataObj.name;
   iconEl.textContent = dataObj.weather.icon;
-  tempEl.textContent = dataObj.main.temp;
-  windEl.textContent = dataObj.wind.speed;
-  humidityEl.textContent = dataObj.main.humidity;
+  tempEl.textContent = "Temperature: " + dataObj.main.temp + "°F";
+  windEl.textContent = "Wind Speed: " + dataObj.wind.speed + " mph";
+  humidityEl.textContent = "Humidity: " + dataObj.main.humidity + "%";
   weatherContainerEl.append(cityEl, iconEl, tempEl, windEl, humidityEl);
 };
 
@@ -99,10 +99,13 @@ var displayFiveDayForcast = function (array) {
     var windEl = document.createElement("p");
     var humidityEl = document.createElement("p");
     var date = forecastItem.dt_txt.split(" ")[0];
+    forecastContainer.classList.add("individual-forecast-card");
+    forecastContainer.classList.add("col-12");
+    forecastContainer.classList.add("col-md-2");
     dateEl.textContent = date;
-    tempEl.textContent = "Temperature: " + forecastItem.main.temp;
-    windEl.textContent = "Wind Speed: " + forecastItem.wind.speed;
-    humidityEl.textContent = "Humidity: " + forecastItem.main.humidity;
+    tempEl.textContent = "Temperature: " + forecastItem.main.temp + "°F";
+    windEl.textContent = "Wind Speed: " + forecastItem.wind.speed + " mph";
+    humidityEl.textContent = "Humidity: " + forecastItem.main.humidity + "%";
     forecastContainer.append(dateEl, tempEl, windEl, humidityEl);
     fiveDayForcastEl.appendChild(forecastContainer);
   }
@@ -114,7 +117,6 @@ var getCoordinates = function (coordinates) {
   var limit = 1;
   var apiKey = "5800608481ba95f3f6584cd0785fd228";
   var coordUrl =
-    // "http://api.openweathermap.org/geo/1.0/direct?q=" +
     "https://api.openweathermap.org/data/2.5/weather?q=" +
     coordinates +
     "&units=imperial" +
