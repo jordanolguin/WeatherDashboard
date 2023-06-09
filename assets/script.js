@@ -69,7 +69,7 @@ var saveSearch = function (city) {
 
 //capturing and appending current weather to DOM
 var displayCurrentWeather = function (dataObj) {
-  weatherContainerEl.textContent = " ";
+  weatherContainerEl.textContent = "";
   console.log(dataObj);
   var cityEl = document.createElement("h2");
   var iconEl = document.createElement("img");
@@ -77,7 +77,11 @@ var displayCurrentWeather = function (dataObj) {
   var windEl = document.createElement("p");
   var humidityEl = document.createElement("p");
   cityEl.textContent = dataObj.name;
-  iconEl.textContent = dataObj.weather.icon;
+  var iconCode = dataObj.weather[0].icon;
+  var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+  iconEl.src = iconUrl;
+  iconEl.style.width = "50px";
+  iconEl.style.height = "50px";
   tempEl.textContent = "Temperature: " + dataObj.main.temp + "°F";
   windEl.textContent = "Wind Speed: " + dataObj.wind.speed + " mph";
   humidityEl.textContent = "Humidity: " + dataObj.main.humidity + "%";
@@ -103,6 +107,9 @@ var displayFiveDayForcast = function (array) {
     forecastContainer.classList.add("col-12");
     forecastContainer.classList.add("col-md-2");
     dateEl.textContent = date;
+    // var iconCode = dataObj.weather[0].icon;
+    // var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+    // iconEl.src = iconUrl;
     tempEl.textContent = "Temperature: " + forecastItem.main.temp + "°F";
     windEl.textContent = "Wind Speed: " + forecastItem.wind.speed + " mph";
     humidityEl.textContent = "Humidity: " + forecastItem.main.humidity + "%";
